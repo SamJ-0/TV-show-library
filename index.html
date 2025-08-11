@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tv show library</title>
+    <link rel="icon" href="#">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <button class="add-show-btn">+ Add TV show</button>
+    </header>
+
+    <section class="modal-section">
+    <dialog class="modal centered">
+        <div class="form-container">
+        <button class="close-dialog" title="close modal">x</button>
+        <h2 class="form-title">Add show</h2>
+        <p class="form-desc">Enter show details:</p>
+        <form id="add-show-form">
+            <div class="form-group grid-col-span-2">
+                <label for="title">Title:</label>
+                <input type="text" name="title" id="title" placeholder="Enter the name of a TV show">
+                <div class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="episodes">Episodes:</label>
+                <input type="number" name="episodes" id="episodes" placeholder="1">
+                <div class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="seasons">Seasons:</label>
+                <input type="number" name="seasons" id="seasons" placeholder="1">
+                <div class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="released">Released:</label>
+                <input type="date" name="released" id="released" min="1950-01-01">
+                <div class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="watch-status">Watch status:</label>
+                <select name="watch-status" id="watch-status">
+                    <option value="Watching">Watching</option>
+                    <option value="Seen">Seen</option>
+                    <option value="Plan-to-watch">Plan to watch</option>
+                    <option value="Dropped">Dropped</option>
+                </select>
+                <div class="error"></div>
+            </div>
+             <div class="form-group grid-col-span-2">
+                <label for="genre">Genre:</label>
+                <input type="text" name="genre" id="genre" placeholder="Drama, Crime, Mystery, Comedy">
+            </div>
+
+            <div class="form-group button-group">
+                <button type="button" class="cancel-add-show-btn">Cancel</button>
+                <button type="submit" id="submit-add-show-btn">Submit</button>
+            </div>
+        </form>
+        </div>
+    </dialog>
+</section>
+    <section>
+        <div class="container">
+        </div>
+    </section>
+    <script src="script.js"></script>
+</body>
+</html>
