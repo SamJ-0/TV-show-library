@@ -38,6 +38,8 @@ formReleased.addEventListener("change", () => {
 
 const myLibrary = [];
 
+displayOnPageLoad();
+
 class Show {
   constructor(title, episodes, seasons, releaseDate, watchStatus, genre, id) {
     this.title = title;
@@ -53,14 +55,13 @@ class Show {
   }
 }
 
-displayOnPageLoad();
-
 function displayOnPageLoad() {
   const getShowFromLocalStorage = localStorage.getItem("showArray");
   const getParsedShow = JSON.parse(getShowFromLocalStorage);
 
   if (getParsedShow != null) {
     for (let i = 0; i < getParsedShow.length; i++) {
+      myLibrary.push(getParsedShow[i]);
       displayTvShowText(getParsedShow[i]);
     }
   }
