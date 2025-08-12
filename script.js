@@ -59,8 +59,10 @@ function displayOnPageLoad() {
   const getShowFromLocalStorage = localStorage.getItem("showArray");
   const getParsedShow = JSON.parse(getShowFromLocalStorage);
 
-  for (let i = 0; i < getParsedShow.length; i++) {
-    displayTvShowText(getParsedShow[i]);
+  if (getParsedShow != null) {
+    for (let i = 0; i < getParsedShow.length; i++) {
+      displayTvShowText(getParsedShow[i]);
+    }
   }
 }
 
