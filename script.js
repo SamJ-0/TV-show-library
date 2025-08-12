@@ -38,26 +38,37 @@ formReleased.addEventListener("change", () => {
 
 const myLibrary = [];
 
-function Show(title, episodes, seasons, releaseDate, watchStatus, genre, id) {
-  if (!new.target) {
-    throw Error("You must use the new operator to call the constructor");
+class Show {
+  constructor(title, episodes, seasons, releaseDate, watchStatus, genre, id) {
+    this.title = title;
+    this.episodes = episodes;
+    this.seasons = seasons;
+    this.releaseDate = releaseDate;
+    this.watchStatus = watchStatus;
+    this.genre = genre;
+    this.id = id;
   }
-
-  this.title = title;
-  this.episodes = episodes;
-  this.seasons = seasons;
-  this.releaseDate = releaseDate;
-  this.watchStatus = watchStatus;
-  this.genre = genre;
-  this.id = id;
-
-  this.info = function () {
+  info() {
     return `${this.title}, Episodes: ${this.episodes}, Seasons: ${this.seasons}, Released: ${this.releaseDate}, Seen: ${this.watchStatus}`;
-  };
+  }
+}
+
+displayOnPageLoad();
+
+function displayOnPageLoad() {
+  const getShowFromLocalStorage = localStorage.getItem("showArray");
+  const getParsedShow = JSON.parse(getShowFromLocalStorage);
+
+  for (let i = 0; i < getParsedShow.length; i++) {
+    displayTvShowText(getParsedShow[i]);
+  }
 }
 
 function addShowToLibrary(obj) {
   myLibrary.push(obj);
+
+  const showArrayJSON = JSON.stringify(myLibrary);
+  localStorage.setItem("showArray", showArrayJSON);
 }
 
 function displayTvShowText(obj) {
