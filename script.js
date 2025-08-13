@@ -33,7 +33,7 @@ form.addEventListener("submit", (e) => {
 });
 
 formReleased.addEventListener("change", () => {
-  releaseDateValidation(formReleased.value);
+  releaseDateValidation();
 });
 
 const myLibrary = [];
@@ -251,13 +251,17 @@ function setSelectDefault() {
   formWatchStatus.disabled = false;
 }
 
-function releaseDateValidation(releaseDate) {
+function releaseDateValidation() {
+  const releaseDate = formReleased.value.trim();
   const currentDate = new Date().toISOString().slice(0, 10);
   const futureDate = releaseDate > currentDate;
 
   let isReleaseDateValid = false;
 
-  if (futureDate) {
+  if (releaseDate === "") {
+    setErrorStatus(formReleased, "You need to enter a date!");
+    isReleaseDateValid = false;
+  } else if (futureDate) {
     setSelectDisabled();
     isReleaseDateValid = true;
   } else {
@@ -272,7 +276,6 @@ function showInputValidation() {
   const title = formTitle.value.trim();
   const episodes = formEpisodes.value.trim();
   const seasons = formSeasons.value.trim();
-  const releaseDate = formReleased.value.trim();
 
   let isTitleValid = false;
   let isEpisodesValid = false;
@@ -286,20 +289,18 @@ function showInputValidation() {
   }
 
   if (episodes < 1) {
-    setErrorStatus(formEpisodes, "You need at least 1 episode");
+    setErrorStatus(formEpisodes, "You need at least 1 episode!");
   } else {
     setValidStatus(formEpisodes);
     isEpisodesValid = true;
   }
 
   if (seasons < 1) {
-    setErrorStatus(formSeasons, "You need at least 1 season");
+    setErrorStatus(formSeasons, "You need at least 1 season!");
   } else {
     setValidStatus(formSeasons);
     isSeasonsValid = true;
   }
-
-  releaseDateValidation(releaseDate);
 
   return isTitleValid && isEpisodesValid && isSeasonsValid;
 }
