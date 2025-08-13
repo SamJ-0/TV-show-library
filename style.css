@@ -43,7 +43,35 @@ dialog.centered {
   border: none;
   border-radius: 6px;
   filter: drop-shadow(0 0 0.75rem #212121);
+}
 
+.empty-page-info {
+    height: 60vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    visibility: visible;
+}
+
+.empty-page-info-hidden {
+    visibility: hidden;
+}
+
+.main-heading {
+    font-size: 3rem;
+    margin-bottom: 0.5em;
+}
+
+.main-heading,
+.main-heading-text {
+    color: #929292;
+    text-align: center;
+}
+
+.main-heading-text {
+    font-size: 1.25rem;
 }
 
 .form-container {

@@ -4,6 +4,7 @@ const openModal = document.querySelector(".add-show-btn");
 const closeModal = document.querySelector(".cancel-add-show-btn");
 const closeDialogBtn = document.querySelector(".close-dialog");
 const modalSubmitButton = document.querySelector("#submit-add-show-btn");
+const emptyPageInfo = document.querySelector(".empty-page-info");
 const form = document.querySelector("#add-show-form");
 
 const formTitle = document.querySelector("#title");
@@ -59,12 +60,30 @@ function displayOnPageLoad() {
   const getShowFromLocalStorage = localStorage.getItem("showArray");
   const getParsedShow = JSON.parse(getShowFromLocalStorage);
 
-  if (getParsedShow != null) {
+  console.log(localStorage);
+  console.log(getParsedShow.length);
+
+  if (getParsedShow != null && getParsedShow.length >= 1) {
+    removeEmptyPageInfo();
     for (let i = 0; i < getParsedShow.length; i++) {
       myLibrary.push(getParsedShow[i]);
       displayTvShowText(getParsedShow[i]);
     }
+  } else if (
+    getParsedShow.length < 1 ||
+    getParsedShow === null ||
+    localStorage.length < 1
+  ) {
+    displayEmptyPageInfo();
   }
+}
+
+function displayEmptyPageInfo() {
+  emptyPageInfo.classList.remove("empty-page-info-hidden");
+}
+
+function removeEmptyPageInfo() {
+  emptyPageInfo.classList.add("empty-page-info-hidden");
 }
 
 function addShowToLibrary(obj) {
@@ -321,6 +340,8 @@ function userSubmittedShow(event) {
       formGenre.value,
       crypto.randomUUID()
     );
+
+    removeEmptyPageInfo();
     addShowToLibrary(userAddedShow);
     displayTvShowText(userAddedShow);
 
@@ -337,12 +358,28 @@ function removeShowData(event) {
   const card = event.target.closest(".card");
   const cardId = card.getAttribute("data-attribute");
 
+  const getShowLocalStorage = localStorage.getItem("showArray");
+  const getShowParsed = JSON.parse(getShowLocalStorage);
+
   const libraryId = myLibrary.findIndex((item) => {
     return removeBtnId === item.id;
   });
 
+  const findLocalStorageID = getShowParsed.findIndex((item) => {
+    return cardId === item.id;
+  });
+
   if (removeBtnId === cardId) {
     myLibrary.splice(libraryId, 1);
+    getShowParsed.splice(findLocalStorageID, 1);
+
+    const updatedShowList = JSON.stringify(getShowParsed);
+    localStorage.setItem("showArray", updatedShowList);
+
     card.remove();
+  }
+
+  if (getShowParsed.length < 1) {
+    displayEmptyPageInfo();
   }
 }
