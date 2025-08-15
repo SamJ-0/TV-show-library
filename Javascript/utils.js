@@ -1,3 +1,5 @@
+import { emptyPageInfo } from "./main.js";
+
 function addParagraphElement(textContent, className) {
   const paragraph = document.createElement("p");
   paragraph.textContent = textContent;
@@ -20,4 +22,18 @@ function saveToLocalStorage(element) {
   localStorage.setItem("showArray", updatedShowList);
 }
 
-export { addParagraphElement, createButton, saveToLocalStorage };
+function displayEmptyPageInfo() {
+  emptyPageInfo.classList.remove("empty-page-info-hidden");
+}
+
+function removeEmptyPageInfo() {
+  emptyPageInfo.classList.add("empty-page-info-hidden");
+}
+
+export {
+  addParagraphElement,
+  createButton,
+  saveToLocalStorage,
+  displayEmptyPageInfo,
+  removeEmptyPageInfo,
+};
