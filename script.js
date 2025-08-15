@@ -14,9 +14,6 @@ const formReleased = document.querySelector("#released");
 const formWatchStatus = document.querySelector("#watch-status");
 const formGenre = document.querySelector("#genre");
 
-const getShowLocalStorage = localStorage.getItem("showArray");
-const getShowParsed = JSON.parse(getShowLocalStorage);
-
 openModal.addEventListener("click", () => {
   modal.showModal();
 });
@@ -60,18 +57,18 @@ class Show {
 }
 
 function displayOnPageLoad() {
-  const getShowFromLocalStorage = localStorage.getItem("showArray");
-  const getParsedShow = JSON.parse(getShowFromLocalStorage);
+  const getFromLocalStorage = localStorage.getItem("showArray");
+  const parsedLocalStorageData = JSON.parse(getFromLocalStorage);
 
-  if (getParsedShow != null && getParsedShow.length >= 1) {
+  if (parsedLocalStorageData != null && parsedLocalStorageData.length >= 1) {
     removeEmptyPageInfo();
-    for (let i = 0; i < getParsedShow.length; i++) {
-      myLibrary.push(getParsedShow[i]);
-      displayTvShowText(getParsedShow[i]);
+    for (let i = 0; i < parsedLocalStorageData.length; i++) {
+      myLibrary.push(parsedLocalStorageData[i]);
+      displayTvShowText(parsedLocalStorageData[i]);
     }
   } else if (
-    getParsedShow.length < 1 ||
-    getParsedShow === null ||
+    parsedLocalStorageData.length < 1 ||
+    parsedLocalStorageData === null ||
     localStorage.length < 1
   ) {
     displayEmptyPageInfo();
@@ -216,9 +213,7 @@ function createStatusDropDown(
 
       myLibrary[isIdInLibrary].watchStatus = selectedStatus;
 
-      const updateCardWatchStatus = JSON.stringify(myLibrary);
-
-      localStorage.setItem("showArray", updateCardWatchStatus);
+      saveToLocalStorage(myLibrary);
     }
   });
 
@@ -233,8 +228,6 @@ function createStatusDropDownOptions(textContent) {
 
   return statusOption;
 }
-
-// function updateCardWatchStatus() {}
 
 function createGenrePill(textContent) {
   const genreBackground = document.createElement("div");
@@ -376,21 +369,20 @@ function removeShowData(event) {
     return removeBtnId === item.id;
   });
 
-  const findLocalStorageID = getShowParsed.findIndex((item) => {
-    return cardId === item.id;
-  });
-
   if (removeBtnId === cardId) {
     myLibrary.splice(libraryId, 1);
-    getShowParsed.splice(findLocalStorageID, 1);
 
-    const updatedShowList = JSON.stringify(getShowParsed);
-    localStorage.setItem("showArray", updatedShowList);
+    saveToLocalStorage(myLibrary);
 
     card.remove();
   }
 
-  if (getShowParsed.length < 1) {
+  if (myLibrary.length < 1) {
     displayEmptyPageInfo();
   }
+}
+
+function saveToLocalStorage(element) {
+  const updatedShowList = JSON.stringify(element);
+  localStorage.setItem("showArray", updatedShowList);
 }
