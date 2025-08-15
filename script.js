@@ -14,6 +14,9 @@ const formReleased = document.querySelector("#released");
 const formWatchStatus = document.querySelector("#watch-status");
 const formGenre = document.querySelector("#genre");
 
+const getShowLocalStorage = localStorage.getItem("showArray");
+const getShowParsed = JSON.parse(getShowLocalStorage);
+
 openModal.addEventListener("click", () => {
   modal.showModal();
 });
@@ -60,9 +63,6 @@ function displayOnPageLoad() {
   const getShowFromLocalStorage = localStorage.getItem("showArray");
   const getParsedShow = JSON.parse(getShowFromLocalStorage);
 
-  console.log(localStorage);
-  console.log(getParsedShow.length);
-
   if (getParsedShow != null && getParsedShow.length >= 1) {
     removeEmptyPageInfo();
     for (let i = 0; i < getParsedShow.length; i++) {
@@ -105,8 +105,8 @@ function displayTvShowText(obj) {
     `Released: ${obj.releaseDate}`,
     "card-text"
   );
-  const watchStatus = createStatusBadge(
-    "card-watch-status",
+  const watchStatus = createStatusDropDown(
+    obj.id,
     obj.watchStatus,
     "Watching",
     "Seen",
@@ -149,7 +149,7 @@ function createCard(
   cardBody.appendChild(cardGradient);
 
   const statusLabel = document.createElement("label");
-  statusLabel.setAttribute("for", "card-watch-status");
+  statusLabel.setAttribute("for", cardId);
   statusLabel.textContent = "Status: ";
 
   cardBody.appendChild(removeButton);
@@ -172,7 +172,7 @@ function addParagraphElement(textContent, className) {
   return paragraph;
 }
 
-function createStatusBadge(
+function createStatusDropDown(
   statusFor,
   selectedStatus,
   watching,
@@ -185,6 +185,7 @@ function createStatusBadge(
   statusSelect.setAttribute("name", statusFor);
   statusSelect.setAttribute("id", statusFor);
   statusSelect.classList.add(selectedStatus);
+  statusSelect.classList.add("card-watch-status");
 
   const statusOptions = [watching, seen, planToWatch, dropped];
   const splitStatus = selectedStatus.split("-");
@@ -192,11 +193,11 @@ function createStatusBadge(
 
   statusOptions.forEach((element) => {
     if (joinedStatus != element) {
-      statusSelect.appendChild(createStatusBadgeOptions(element));
+      statusSelect.appendChild(createStatusDropDownOptions(element));
     } else {
-      statusSelect.appendChild(
-        createStatusBadgeOptions(element)
-      ).selected = true;
+      statusSelect
+        .appendChild(createStatusDropDownOptions(element))
+        .setAttribute("selected", true);
     }
   });
 
@@ -206,14 +207,25 @@ function createStatusBadge(
       const statusWithHyphen = removeWhiteSpace.join("-");
 
       statusSelect.classList.replace(selectedStatus, statusWithHyphen);
+
       selectedStatus = statusWithHyphen;
+
+      const isIdInLibrary = myLibrary.findIndex((item) => {
+        return statusSelect.id === item.id;
+      });
+
+      myLibrary[isIdInLibrary].watchStatus = selectedStatus;
+
+      const updateCardWatchStatus = JSON.stringify(myLibrary);
+
+      localStorage.setItem("showArray", updateCardWatchStatus);
     }
   });
 
   return statusSelect;
 }
 
-function createStatusBadgeOptions(textContent) {
+function createStatusDropDownOptions(textContent) {
   const statusOption = document.createElement("option");
 
   statusOption.value = textContent;
@@ -221,6 +233,8 @@ function createStatusBadgeOptions(textContent) {
 
   return statusOption;
 }
+
+// function updateCardWatchStatus() {}
 
 function createGenrePill(textContent) {
   const genreBackground = document.createElement("div");
@@ -357,9 +371,6 @@ function removeShowData(event) {
   const removeBtnId = event.target.getAttribute("data-attribute");
   const card = event.target.closest(".card");
   const cardId = card.getAttribute("data-attribute");
-
-  const getShowLocalStorage = localStorage.getItem("showArray");
-  const getShowParsed = JSON.parse(getShowLocalStorage);
 
   const libraryId = myLibrary.findIndex((item) => {
     return removeBtnId === item.id;
