@@ -167,14 +167,6 @@ function createCard(
   return bodyContainer.appendChild(cardBody);
 }
 
-// function addParagraphElement(textContent, className) {
-//   const paragraph = document.createElement("p");
-//   paragraph.textContent = textContent;
-//   paragraph.classList.add(className);
-
-//   return paragraph;
-// }
-
 function createStatusDropDown(
   statusFor,
   selectedStatus,
@@ -245,15 +237,6 @@ function createGenrePill(textContent) {
 
   return genreBackground;
 }
-
-// function createButton(textContent, className) {
-//   const button = document.createElement("button");
-
-//   button.textContent = textContent;
-//   button.classList.add(className);
-
-//   return button;
-// }
 
 function setErrorStatus(element, message) {
   const inputElement = element.parentElement;
@@ -387,8 +370,3 @@ function removeShowData(event) {
     displayEmptyPageInfo();
   }
 }
-
-// function saveToLocalStorage(element) {
-//   const updatedShowList = JSON.stringify(element);
-//   localStorage.setItem("showArray", updatedShowList);
-// }
