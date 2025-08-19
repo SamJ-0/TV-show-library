@@ -1,5 +1,9 @@
 import { displayTvShowText } from "./card.js";
-import { releaseDateValidation, showInputValidation } from "./validation.js";
+import {
+  releaseDateValidation,
+  setValidStatus,
+  showInputValidation,
+} from "./validation.js";
 import { userSubmittedShow } from "./showManager.js";
 import { displayEmptyPageInfo, removeEmptyPageInfo } from "./utils.js";
 
@@ -28,6 +32,10 @@ closeDialogBtn.addEventListener("click", closeDialog);
 
 function closeDialog() {
   modal.close();
+  setValidStatus(formTitle);
+  setValidStatus(formEpisodes);
+  setValidStatus(formSeasons);
+  setValidStatus(formReleased);
 }
 
 modalSubmitButton.addEventListener("click", userSubmittedShow);

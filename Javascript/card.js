@@ -54,6 +54,7 @@ function createCard(
 ) {
   const cardBody = document.createElement("div");
   cardBody.classList.add("card");
+  cardBody.classList.add(`status-${removeSpaceInWatchStatus(cardWatchStatus)}`);
   cardBody.setAttribute("data-attribute", cardId);
   removeButton.setAttribute("data-attribute", cardId);
 
@@ -110,12 +111,21 @@ function createStatusDropDown(
 
   statusSelect.addEventListener("change", () => {
     if (statusSelect.value != selectedStatus) {
-      const removeWhiteSpace = statusSelect.value.split(" ");
-      const statusWithHyphen = removeWhiteSpace.join("-");
+      const closestCard = statusSelect.closest(".card");
 
-      statusSelect.classList.replace(selectedStatus, statusWithHyphen);
+      removeSpaceInWatchStatus(statusSelect);
 
-      selectedStatus = statusWithHyphen;
+      statusSelect.classList.replace(
+        selectedStatus,
+        removeSpaceInWatchStatus(statusSelect)
+      );
+
+      closestCard.classList.replace(
+        `status-${selectedStatus}`,
+        `status-${removeSpaceInWatchStatus(statusSelect)}`
+      );
+
+      selectedStatus = removeSpaceInWatchStatus(statusSelect);
 
       const isIdInLibrary = myLibrary.findIndex((item) => {
         return statusSelect.id === item.id;
@@ -137,6 +147,11 @@ function createStatusDropDownOptions(textContent) {
   statusOption.textContent = textContent;
 
   return statusOption;
+}
+
+function removeSpaceInWatchStatus(element) {
+  const removeWhiteSpace = element.value.split(" ");
+  return removeWhiteSpace.join("-");
 }
 
 function createGenrePill(textContent) {

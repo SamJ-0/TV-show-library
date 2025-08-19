@@ -47,9 +47,11 @@ function releaseDateValidation() {
   } else if (futureDate) {
     setSelectDisabled();
     isReleaseDateValid = true;
+    setValidStatus(formReleased);
   } else {
     setSelectDefault();
     isReleaseDateValid = true;
+    setValidStatus(formReleased);
   }
 
   return isReleaseDateValid;
