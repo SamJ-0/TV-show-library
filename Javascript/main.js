@@ -36,6 +36,7 @@ function closeDialog() {
   setValidStatus(formEpisodes);
   setValidStatus(formSeasons);
   setValidStatus(formReleased);
+  form.reset();
 }
 
 modalSubmitButton.addEventListener("click", userSubmittedShow);
